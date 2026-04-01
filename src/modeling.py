@@ -10,6 +10,7 @@ from sklearn.metrics import (
     silhouette_samples,
     davies_bouldin_score,
     calinski_harabasz_score,
+    adjusted_rand_score,
 )
 
 
@@ -199,6 +200,41 @@ def compare_algorithms(pca_data, hierarchical_result, kmeans_result, dbscan_resu
     print(f"Best Calinski-Harabasz:  {df['Calinski-Harabasz ↑'].idxmax()}")
 
     return df
+
+
+def bootstrap_stability(pca_data, n_clusters, n_iterations=100, subsample_frac=0.8, random_state=42):
+    """
+    Assess cluster stability by running agglomerative clustering on random 80% subsamples
+    and computing Adjusted Rand Index against the full-data labels for matching indices.
+    Returns a dict with: ari_scores, mean_ari, std_ari
+    """
+    X = pca_data["transformed"]
+    rng = np.random.default_rng(random_state)
+
+    full_labels = AgglomerativeClustering(n_clusters=n_clusters, linkage="ward").fit_predict(X)
+
+    ari_scores = []
+    n_subsample = int(len(X) * subsample_frac)
+
+    for _ in range(n_iterations):
+        idx = rng.choice(len(X), size=n_subsample, replace=False)
+        sub_labels = AgglomerativeClustering(n_clusters=n_clusters, linkage="ward").fit_predict(X[idx])
+        ari = adjusted_rand_score(full_labels[idx], sub_labels)
+        ari_scores.append(ari)
+
+    mean_ari = np.mean(ari_scores)
+    std_ari = np.std(ari_scores)
+    print(f"Bootstrap stability (n={n_iterations}, subsample={subsample_frac:.0%}): "
+          f"mean ARI={mean_ari:.4f}, std={std_ari:.4f}")
+
+    if mean_ari > 0.6:
+        print("Interpretation: STABLE (ARI > 0.6)")
+    elif mean_ari >= 0.4:
+        print("Interpretation: MODERATE (ARI 0.4–0.6)")
+    else:
+        print("Interpretation: UNSTABLE (ARI < 0.4)")
+
+    return {"ari_scores": ari_scores, "mean_ari": mean_ari, "std_ari": std_ari}
 
 
 def evaluate_clustering(df, pca_data, clustering_data):
