@@ -6,3 +6,6 @@ seaborn==0.12.2
 scipy==1.11.2
 jupyter==1.0.0
 ipython==8.14.0
+geopandas>=0.14.0
+mapclassify>=2.6.0
+contextily>=1.4.0
