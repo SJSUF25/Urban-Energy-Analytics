@@ -1,9 +1,15 @@
 """PCA, clustering (Hierarchical / K-Means / DBSCAN), and evaluation."""
 
+import warnings
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+
+# sklearn's PCA emits cosmetic divide-by-zero RuntimeWarnings during _assess_dimension
+# when one feature has a very wide tail (electricity_per_capita does, due to EIA's
+# ZIP-attribution artifacts). Outputs are finite and correct; suppress the noise.
+warnings.filterwarnings("ignore", category=RuntimeWarning, module="sklearn")
 from sklearn.cluster import AgglomerativeClustering, KMeans, DBSCAN
 from sklearn.metrics import (
     silhouette_score,
@@ -256,6 +262,7 @@ def evaluate_clustering(df, pca_data, clustering_data):
         "renter_occupancy_rate",
         "housing_age",
         "income_log",
+        "household_size",
         "median_income",
     ]
 

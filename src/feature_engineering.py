@@ -10,17 +10,19 @@ FEATURE_COLS = [
     "renter_occupancy_rate",
     "housing_age",
     "income_log",
+    "household_size",
 ]
 
 
 def engineer_features(df):
     """
-    Compute 5 features for unsupervised learning:
+    Compute 6 features for unsupervised learning:
       - electricity_per_customer: annual MWh per residential account
       - electricity_per_capita: annual MWh per person
       - renter_occupancy_rate: fraction of occupied units that are rented
       - housing_age: years since median structure was built (as of 2022)
       - income_log: log-transformed median household income
+      - household_size: average persons per occupied housing unit
     """
     df = df.copy()
 
@@ -39,11 +41,26 @@ def engineer_features(df):
 
     df["income_log"] = np.log(df["median_income"] + 1)
 
+    if "total_occupied_units" in df.columns:
+        df["household_size"] = df["population"] / df["total_occupied_units"]
+    else:
+        df["household_size"] = np.nan
+
     before = len(df)
     df = df.replace([np.inf, -np.inf], np.nan).dropna(subset=FEATURE_COLS)
     dropped = before - len(df)
     if dropped > 0:
         print(f"Dropped {dropped} rows with invalid feature values")
+
+    # Drop physically implausible per-capita usage (utility-to-ZIP attribution artifacts
+    # in EIA Form 861: a single utility account's sales are reported against several
+    # ZIPs, producing per-capita numbers 5-10x the U.S. household norm of ~3.6 MWh).
+    PER_CAPITA_CAP = 15.0  # MWh/person/year
+    before = len(df)
+    df = df[df["electricity_per_capita"] <= PER_CAPITA_CAP]
+    dropped_outliers = before - len(df)
+    if dropped_outliers > 0:
+        print(f"Dropped {dropped_outliers} ZIPs with electricity_per_capita > {PER_CAPITA_CAP} (data attribution artifacts)")
 
     print(f"Features ready for {len(df):,} ZIPs")
     print(df[FEATURE_COLS].describe())

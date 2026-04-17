@@ -1,4 +1,4 @@
 Algorithm,Silhouette ↑,Davies-Bouldin ↓,Calinski-Harabasz ↑,n_clusters,n_noise
-Hierarchical (k=6),0.2697,1.0045,181.33,6,0
-K-Means (k=3),0.3181,0.9764,190.19,3,0
-DBSCAN (eps=0.7),0.4679,0.4821,28.87,2,48
+Hierarchical (k=3),0.2456,1.5115,138.28,3,0
+K-Means (k=3),0.2709,1.3847,154.58,3,0
+DBSCAN (eps=0.3),0.8957,0.135,571.07,2,455
