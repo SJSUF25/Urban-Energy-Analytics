@@ -2,7 +2,7 @@
 
 **Urban Sustainability and Energy Behavior: A 2022 Comparative Study of NYC and LA**
 
-This project examines the relationship between socio-economic characteristics and residential electricity consumption across ZIP codes in New York City and Los Angeles using 2022 data. It applies PCA for dimensionality reduction and compares three clustering algorithms—Agglomerative Hierarchical, K-Means, and DBSCAN—to identify distinct neighborhood energy-use profiles.
+This project examines the relationship between socio-economic characteristics and residential electricity consumption across ZIP codes in New York City and Los Angeles using 2022 data. It applies PCA for dimensionality reduction and compares three clustering algorithms; Agglomerative Hierarchical, K-Means, and DBSCAN—to identify distinct neighborhood energy-use profiles.
 
 **GitHub Repository:** https://github.com/SJSUF25/Urban-Energy-Analytics
 
