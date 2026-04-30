@@ -2,7 +2,7 @@
 
 **Urban Sustainability and Energy Behavior: A 2022 Comparative Study of NYC and LA**
 
-This project analyzes the relationship between socio-economic characteristics and residential electricity consumption across ZIP codes in New York City and Los Angeles using 2022 data. We apply PCA for dimensionality reduction and compare three clustering algorithms (Agglomerative Hierarchical, K-Means, DBSCAN) to identify distinct neighborhood energy profiles.
+This project examines the relationship between socio-economic characteristics and residential electricity consumption across ZIP codes in New York City and Los Angeles using 2022 data. It applies PCA for dimensionality reduction and compares three clustering algorithms—Agglomerative Hierarchical, K-Means, and DBSCAN—to identify distinct neighborhood energy-use profiles.
 
 **GitHub Repository:** https://github.com/SJSUF25/Urban-Energy-Analytics
 
@@ -122,7 +122,7 @@ Cluster 3 is city-exclusive (100% LA), and clusters 0 and 5 are nearly so for NY
 - **ZCTA ≠ ZIP.** ACS demographics are reported at the ZIP Code Tabulation Area level, which approximates but does not exactly match USPS ZIP delivery areas used by EIA. This introduces small boundary mismatches.
 - **Cross-sectional snapshot.** A single year (2022) cannot capture year-over-year shifts in efficiency, electrification, or post-pandemic occupancy changes.
 
-**Future work:** integrate NOAA HDD/CDD as a climate covariate; add NYC LL84 building benchmarking for monthly residential consumption (NYC only); extend to additional MSAs (Chicago, Houston, Phoenix) to test cluster archetype generalizability.
+**Future work:** Integrate NOAA heating and cooling degree days (HDD/CDD) as climate covariates; incorporate NYC Local Law 84 building benchmarking data for monthly residential consumption (NYC only); and extend the analysis to additional MSAs (Chicago, Houston, and Phoenix) to evaluate the generalizability of cluster archetypes.
 
 ---
 
